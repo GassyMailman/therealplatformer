@@ -11,10 +11,12 @@ game.PlayerEntity = me.ObjectEntity.extend({
        this.renderable.setCurrentAnimation("idle");
        
        this.setVelocity(5, 20);
+       
+       me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
    },
     
     update: function() {
-       if(me.input.isKeyPressed("right")) {
+      if(me.input.isKeyPressed("right")) {
           this.vel.x += this.accel.x * me.timer.tick;
       }
       else if(me.input.isKeyPressed("left")) {
@@ -23,6 +25,19 @@ game.PlayerEntity = me.ObjectEntity.extend({
       else {
         this.vel.x = 0;
       }
+      if (me.input.isKeyPressed("jump")) {
+                if (this.doJump()) {
+                }
+                /*
+                If user continues to press jump while jump
+                Player jumps higher
+                 */
+                if (me.input.isKeyPressed("jump")) {
+                    if (this.jumping) {
+                        this.pos.y = this.pos.y - 8;
+                    }
+                }
+            }
     
      var collision = this.collide();
      this.updateMovement();
