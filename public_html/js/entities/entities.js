@@ -8,7 +8,10 @@ game.PlayerEntity = me.ObjectEntity.extend({
        this.collidable = true; 
        
        this.renderable.addAnimation("idle", [3]);
-       this.renderable.setCurrentAnimation("idle");
+       this.renderable.addAnimation("duck", [0]);
+       this.renderable.addAnimation("dead", [1]);
+       this.renderable.addAnimation("jump", [2]);
+       this.renderable.setCurrentAnimation("idle");       
        
        this.setVelocity(5, 20);
        
@@ -28,10 +31,7 @@ game.PlayerEntity = me.ObjectEntity.extend({
       if (me.input.isKeyPressed("jump")) {
                 if (this.doJump()) {
                 }
-                /*
-                If user continues to press jump while jump
-                Player jumps higher
-                 */
+                
                 if (me.input.isKeyPressed("jump")) {
                     if (this.jumping) {
                         this.pos.y = this.pos.y - 8;
