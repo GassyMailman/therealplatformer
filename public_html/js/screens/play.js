@@ -26,6 +26,6 @@ game.PlayScreen = me.ScreenObject.extend({
                 
         resetPlayer: function() {
                 var player = new game.PlayerEntity(140, 630, {});
-                me.game.add(player, 4);
+                me.game.add(player, 5);
         }         
 });
