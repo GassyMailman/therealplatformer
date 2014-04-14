@@ -52,8 +52,9 @@ game.PlayerEntity = me.ObjectEntity.extend({
                 this.falling = false;
                 this.vel.y = -this.maxVel.y * me.timer.tick;
                 this.jumping = true;
- 
-            } else {
+                 } 
+           
+            else {
                 this.renderable.flicker(750);
             }
         }
@@ -93,9 +94,14 @@ game.EnemyEntity = me.ObjectEntity.extend({
     init: function(x, y, settings) {
         settings.image = "slime-spritesheet";
         settings.spritewidth = 60;
-        settings.spriteheight = 70;
+        settings.spriteheight = 32;
         this.parent(x, y , settings);
          
+         x = this.pos.x;
+        this.startX = x;
+        this.endX   = x + width - settings.spritewidth;
+        this.pos.x  = x + width - settings.spritewidth;
+        
         this.setVelocity(4, 6);
          
         this.collidable = true;
