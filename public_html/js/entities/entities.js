@@ -1,8 +1,10 @@
 game.PlayerEntity = me.ObjectEntity.extend({
-   init: function(x,y, settings) {
+   init: function(x, y, settings) {
        settings.image = "player1-spritesheet";
        settings.spritewidth = "72";
        settings.spriteheight = "97";
+       settings.width = 72;
+       settings.height = 97; 
        this.parent(x, y, settings);
        
        this.collidable = true; 
@@ -18,13 +20,13 @@ game.PlayerEntity = me.ObjectEntity.extend({
        me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
    },
     
-    update: function(dt) {
+    update: function(deltaTime) {
       if(me.input.isKeyPressed("right")) {
-          this.flipX(false);
+          this.renderable.flipX(false);
           this.vel.x += this.accel.x * me.timer.tick;
       }      
       else if(me.input.isKeyPressed("left")) {
-          this.flipX(true);
+          this.renderable.flipX(true);
           this.vel.x -= this.accel.x * me.timer.tick;
       }      
       else {
@@ -32,8 +34,8 @@ game.PlayerEntity = me.ObjectEntity.extend({
         this.renderable.setCurrentAnimation("run");
       }      
       if (me.input.isKeyPressed("jump")) {
-              if (this.doJump())
-              this.renderable.setCurrentAnimation("up");  
+              this.vel.y -= this.accel.y * me.timer.tick;
+              this.rendeable.setCurrentAnimation("up");  
               if (me.input.isKeyPressed("jump")) {
                     if (this.jumping) {
                         this.pos.y = this.pos.y - 8;
@@ -63,11 +65,11 @@ game.PlayerEntity = me.ObjectEntity.extend({
         // update animation if necessary
         if (this.vel.x!==0 || this.vel.y!==0) {
             // update object animation
-            this.parent(dt);
+            this.parent(deltaTime);
             return true;
         }
         
-     var collision = this.collide();
+     var collision = me.game.world.collide(this);
      this.updateMovement();
      return true;
     
@@ -85,8 +87,8 @@ game.LevelTrigger = me.ObjectEntity.extend({
            
       onCollision: function() {
          this.collidable = false;
-         me.levelDirector.loadLevel.defer(this.level);
-         me.state.current().resetPlayer.defer();
+         me.levelDirector.loadLevel(this.level);
+         me.state.current().resetPlayer();
       }     
  });
  
@@ -115,7 +117,7 @@ game.EnemyEntity = me.ObjectEntity.extend({
         }
     },
  
-    update: function(dt) {
+    update: function(deltaTime) {
         if (!this.inViewport)
             return false;
  

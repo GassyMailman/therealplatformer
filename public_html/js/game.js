@@ -42,9 +42,9 @@ var game = {
 		me.state.set(me.state.MENU, new game.TitleScreen());
 		me.state.set(me.state.PLAY, new game.PlayScreen());
                 
-                me.entityPool.add("player", game.PlayerEntity);
-                me.entityPool.add("levelTrigger", game.LevelTrigger);
-                me.entityPool.add("EnemyEntity", game.EnemyEntity);
+                me.pool.register("player", game.PlayerEntity, true);
+                me.pool.register("levelTrigger", game.LevelTrigger, true);
+                me.pool.register("EnemyEntity", game.EnemyEntity, true);
                 
                 me.input.bindKey(me.input.KEY.A, "left");
                 me.input.bindKey(me.input.KEY.D, "right");

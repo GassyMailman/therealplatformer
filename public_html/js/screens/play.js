@@ -25,7 +25,7 @@ game.PlayScreen = me.ScreenObject.extend({
 	},
                 
         resetPlayer: function() {
-                var player = new game.PlayerEntity(140, 630, {});
-                me.game.add(player, 5);
+                var player = me.pool.pull("player", 140, 630, {});
+                me.game.world.addChild(player, 100);
         }         
 });
