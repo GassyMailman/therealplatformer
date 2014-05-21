@@ -15,7 +15,7 @@ game.PlayerEntity = me.ObjectEntity.extend({
        this.renderable.addAnimation("up", [2]);
        this.renderable.setCurrentAnimation("idle");       
        
-       this.setVelocity(5, 20);
+       this.setVelocity(7, 25);
        
        me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
    },
@@ -33,14 +33,9 @@ game.PlayerEntity = me.ObjectEntity.extend({
         this.vel.x = 0;
         this.renderable.setCurrentAnimation("run");
       }      
-      if (me.input.isKeyPressed("jump")) {
-              this.vel.y -= this.accel.y * me.timer.tick;
-              this.rendeable.setCurrentAnimation("up");  
-              if (me.input.isKeyPressed("jump")) {
-                    if (this.jumping) {
-                        this.pos.y = this.pos.y - 8;
-                    }
-                }
+      if (me.input.isKeyPressed("jump") && !this.jumping && !this.falling) {
+              this.vel.y -= this.accel.y * me.timer.tick;           
+                this.jumping = true;
             }
      
         // check & update player movement
@@ -82,64 +77,17 @@ game.LevelTrigger = me.ObjectEntity.extend({
       this.parent(x, y, settings);
       this.collidable = true;
       this.level = settings.level;
+      this.xSpawn = settings.xSpawn;
+      this.ySpawn = settings.ySpawn;
       
    },
            
       onCollision: function() {
          this.collidable = false;
+         var x = this.xSpawn;
+         var y = this.ySpawn;
          me.levelDirector.loadLevel(this.level);
-         me.state.current().resetPlayer();
+         me.state.current().resetPlayer(x, y);
       }     
  });
  
-game.EnemyEntity = me.ObjectEntity.extend({
-    init: function(x, y, settings) {
-        settings.image = "slime-spritesheet";
-        settings.spritewidth = 60;
-        settings.spriteheight = 32;
-        this.parent(x, y , settings);
-         
-         x = this.pos.x;
-        this.startX = x;
-        this.endX   = x + width - settings.spritewidth;
-        this.pos.x  = x + width - settings.spritewidth;
-        
-        this.setVelocity(4, 6);
-         
-        this.collidable = true;
-        this.type = me.game.ENEMY_OBJECT;
-    },
- 
-    onCollision: function(res, obj) {
- 
-        if (this.alive && (res.y > 0) && obj.falling) {
-            this.renderable.flicker(750);
-        }
-    },
- 
-    update: function(deltaTime) {
-        if (!this.inViewport)
-            return false;
- 
-        if (this.alive) {
-            if (this.walkLeft && this.pos.x <= this.startX) {
-                this.walkLeft = false;
-            } else if (!this.walkLeft && this.pos.x >= this.endX) {
-                this.walkLeft = true;
-            }
-            this.flipX(this.walkLeft);
-            this.vel.x += (this.walkLeft) ? -this.accel.x * me.timer.tick : this.accel.x * me.timer.tick;
-                 
-        } else {
-            this.vel.x = 0;
-        }
-         
-        this.updateMovement();
-         
-        if (this.vel.x!==0 || this.vel.y!==0) {
-            this.parent(dt);
-            return true;
-        }
-        return true;
-    }
-});

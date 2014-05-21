@@ -5,6 +5,7 @@ game.resources = [
 	 * {name: "example", type:"image", src: "data/img/example.png"},
 	 */
            {name: "background-tiles", type:"image", src: "data/img/background-tiles.png"},
+           {name: "background-tiles-custom", type:"image", src: "data/img/background-tiles-custom.png"},
            {name: "item-spritesheet", type:"image", src: "data/img/item-spritesheet.png"},
            {name: "player1-spritesheet", type:"image", src: "data/img/player1-spritesheet.png"},
            {name: "meta-tiles", type:"image", src: "data/img/meta-tiles.png"},
@@ -21,7 +22,8 @@ game.resources = [
  	 */
            {name: "level1", type: "tmx", src: "data/map/level1.tmx"},
            {name: "level2", type: "tmx", src: "data/map/level2.tmx"},
-           {name: "level3", type: "tmx", src: "data/map/level3.tmx"}
+           {name: "level3", type: "tmx", src: "data/map/level3.tmx"},
+           {name: "level4", type: "tmx", src: "data/map/level4.tmx"}
 	/* Background music. 
 	 * @example
 	 * {name: "example_bgm", type: "audio", src: "data/bgm/", channel : 1},
